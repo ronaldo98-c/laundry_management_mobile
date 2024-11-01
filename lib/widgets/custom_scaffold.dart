@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:laundry_management_mobile/constants/image_constants.dart';
 
 class CustomScaffold extends StatelessWidget {
   const CustomScaffold({super.key, this.child});
@@ -15,7 +16,7 @@ class CustomScaffold extends StatelessWidget {
       body: Stack(
         children: [
           Image.asset(
-            'assets/images/baniere.png',
+            AppImages.banner,
             fit: BoxFit.cover,
             width: double.infinity,
             height: double.infinity,

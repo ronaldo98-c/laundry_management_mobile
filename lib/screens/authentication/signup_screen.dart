@@ -1,11 +1,12 @@
-import '../theme/theme.dart';
+import '../../theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
-import 'package:laundry_management_mobile/screens/signin_screen.dart';
+import 'package:laundry_management_mobile/screens/authentication/signin_screen.dart';
 import 'package:laundry_management_mobile/widgets/custom_scaffold.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
+  static const routeName = '/sign-up';
 
   @override
   State<SignUpScreen> createState() => _SignUpScreenState();
@@ -299,7 +300,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (e) => const SignInScreen(),
+                                  builder: (e) =>  const SignInScreen(),
                                 ),
                               );
                             },

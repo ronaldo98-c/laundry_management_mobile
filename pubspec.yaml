@@ -37,6 +37,19 @@ dependencies:
   cupertino_icons: ^1.0.6
   animated_splash_screen: ^1.3.0
   icons_plus: ^5.0.0
+  flutter_bloc: ^8.1.6
+  flutter_secure_storage: ^9.2.2
+  equatable: ^2.0.5
+  http: ^1.2.2
+  meta: ^1.12.0
+  shared_preferences: ^2.2.3
+  fluttertoast: ^8.2.5
+  cached_network_image: ^3.4.1
+  flutter_screenutil: ^5.9.3
+  percent_indicator: ^4.2.3
+  fl_chart: ^0.69.0
+  syncfusion_flutter_datepicker: ^26.2.13
+  page_transition: ^2.1.0
 
 dev_dependencies:
   flutter_test:
@@ -64,6 +77,10 @@ flutter:
   assets:
     - assets/images/pressing.png
     - assets/images/baniere.png
+    - assets/images/basket.jpeg
+    - assets/images/machine.jpeg
+    - assets/images/fer.jpeg
+    - assets/images/black-girl.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

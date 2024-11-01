@@ -1,31 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:laundry_management_mobile/screens/signin_screen.dart';
-import 'package:animated_splash_screen/animated_splash_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:laundry_management_mobile/blocs/app.dart';
+import 'package:laundry_management_mobile/screens/splash_screen.dart';
+import 'package:laundry_management_mobile/controllers/login_controller.dart';
 
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final LoginController loginController = LoginController();
 
-  // This widget is the root of your application.
+  MyApp({super.key});
+  
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        fontFamily: 'Montserrat-Light'
+    return BlocProvider(
+      create: (context) => AppBloc(loginController: loginController)..add(AppStarted()),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(fontFamily: 'Montserrat-Light'),
+        home: const SplashScreen(),
       ),
-      home: AnimatedSplashScreen(
-            duration: 3100,
-            splash: 'assets/images/pressing.png',
-            nextScreen: const SignInScreen(),
-            centered: true,
-            splashTransition: SplashTransition.fadeTransition,
-            backgroundColor: const Color.fromRGBO(2, 39, 74 , 1)
-          ),
     );
   }
 }
