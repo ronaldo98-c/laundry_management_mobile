@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:laundry_management_mobile/constants/constant.dart';
 import 'package:laundry_management_mobile/screens/authentication/signin_screen.dart';
 
@@ -22,18 +23,18 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         backgroundColor: Colors.white,
         actions: [
           Padding(
-            padding: const EdgeInsets.only(right: 20, top: 20),
+            padding: EdgeInsets.only(right: 10.w),
             child: InkWell(
               onTap: () {
                 Navigator.pushReplacement(
                     context, MaterialPageRoute(builder: (_) => const SignInScreen()));
               }, //to login screen. We will update later
-              child: const Text(
+              child: Text(
                 'Skip',
                 style: TextStyle(
                   color: Colors.grey,
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.w400,
+                  fontSize: 10.sp,
+                  fontWeight: FontWeight.w400
                 ),
               ),
             ),
@@ -69,15 +70,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ],
           ),
           Positioned(
-            bottom: 80,
-            left: 30,
+            bottom: 80.h,
+            left: 30.w,
             child: Row(
               children: _buildIndicator(),
             ),
           ),
           Positioned(
-            bottom: 60,
-            right: 30,
+            bottom: 60.h,
+            right: 30.w,
             child: Container(
               padding: const EdgeInsets.all(4),
               decoration: BoxDecoration(
@@ -100,9 +101,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       }
                     });
                   },
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.arrow_forward_ios,
-                    size: 24,
+                    size: 24.sp,
                     color: Colors.white,
                   )),
             ),
@@ -118,12 +119,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   Widget _indicator(bool isActive) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
-      height: 10.0,
-      width: isActive ? 20 : 8,
-      margin: const EdgeInsets.only(right: 5.0),
+      height: 10.h,
+      width: isActive ? 20.w : 8.w,
+      margin: EdgeInsets.only(right: 5.w),
       decoration: BoxDecoration(
         color: Constants.darkBlueColor,
-        borderRadius: BorderRadius.circular(5),
+        borderRadius: BorderRadius.circular(5.r),
       ),
     );
   }
@@ -153,46 +154,46 @@ class CreatePage extends StatelessWidget {
     super.key,
     required this.image,
     required this.title,
-    required this.description,
+    required this.description
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(left: 50, right: 50, bottom: 80),
+      padding: EdgeInsets.only(left: 50.w, right: 50.w, bottom: 80.h),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SizedBox(
-            height: 350,
+            height: 200.h,
             child: Image.asset(image),
           ),
-          const SizedBox(
-            height: 20,
+          SizedBox(
+            height: 10.h,
           ),
           Text(
             title,
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Constants.darkBlueColor,
-              fontSize: 30,
+              fontSize: 16.sp,
               fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(
-            height: 20,
+          SizedBox(
+            height: 8.h
           ),
           Text(
             description,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 20,
+            style:TextStyle(
+              fontSize: 12.sp,
               fontWeight: FontWeight.w400,
-              color: Colors.grey,
+              color: Colors.grey
             ),
           ),
-          const SizedBox(
-            height: 20,
+          SizedBox(
+            height: 15.h
           ),
         ],
       ),

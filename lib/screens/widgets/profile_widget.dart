@@ -1,38 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:laundry_management_mobile/constants/constant.dart';
 
 class ProfileWidget extends StatelessWidget {
   final IconData icon;
   final String title;
   final String subTitle;
+  final VoidCallback? onTap;
 
   const ProfileWidget({
     super.key,
     required this.icon,
     required this.title,
-    required this.subTitle
+    required this.subTitle,
+    this.onTap
   });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20),
+      padding: EdgeInsets.symmetric(vertical: 20.h),
       child: Row(
         children: [
           Container(
-              width: 50,  // Largeur de la boîte
-              height: 50,  // Hauteur de la boîte
+              width: 50.w,  // Largeur de la boîte
+              height: 40.h,  // Hauteur de la boîte
               decoration: BoxDecoration(
                 color: Colors.blue[50],  // Couleur de fond de la boîte (couleur violette très claire)
-                borderRadius: BorderRadius.circular(20),  // Bordures arrondies
+                borderRadius: BorderRadius.circular(25.r)  // Bordures arrondies
               ),
               child: Icon(
                 icon,  // Icône représentant un moniteur
                 color: Colors.blue,  // Couleur de l'icône
-                size: 25,  // Taille de l'icône
-              ),
+                size: 25.sp,  // Taille de l'icône
+              )
           ),
-          const SizedBox(width: 16.0),
+          SizedBox(width: 16.w),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -41,25 +44,25 @@ class ProfileWidget extends StatelessWidget {
                   title,
                   style: TextStyle(
                     color: Constants.blackColor,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.bold
                   ),
                 ),
                 Text(
                   subTitle,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.w300, 
                     color: Colors.black,
-                    fontSize: 14
+                    fontSize: 14.sp
                   ),
                 ),
               ],
             ),
           ),
-          const Icon(
+          Icon(
             Icons.arrow_forward_ios,
             color: Colors.blue,
-            size: 16,
+            size: 16.sp
           )
         ],
       ),

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:laundry_management_mobile/constants/constant.dart';
 import 'package:laundry_management_mobile/screens/statistic/bar_chart.dart';
 import 'package:laundry_management_mobile/screens/statistic/expense_income.dart';
 
@@ -12,20 +14,21 @@ class StatisticScreen extends StatefulWidget {
 
 class _StatisticScreenState extends State<StatisticScreen> {
   final List itemList = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December"
+    "2024",
+    "2023",
+    "2022",
+    "2021",
+    "2020",
+    "2019",
+    "2018",
+    "2017",
+    "2016",
+    "2015",
+    "2014",
+    "2013"
   ];
-  String? selectedValue = "August";
+  
+  String? selectedValue = "2024";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,17 +38,17 @@ class _StatisticScreenState extends State<StatisticScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(
-                height: 10,
+              SizedBox(
+                height: 10.h
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween, 
                 children: [
-                const Text(
+                Text(
                   'Statistics',
                   style: TextStyle(
                       color: Colors.black,
-                      fontSize: 20,
+                      fontSize: 20.sp,
                       fontWeight: FontWeight.bold),
                 ),
                 DropdownButtonHideUnderline(
@@ -71,15 +74,15 @@ class _StatisticScreenState extends State<StatisticScreen> {
                   ),
                 ),
               ]),
-              const SizedBox(
-                height: 10,
+              SizedBox(
+                height: 10.h
               ),
               const ExpenseIncomeData(),
-              const SizedBox(
-                height: 10,
+              SizedBox(
+                height: 10.h
               ),
-              const BarChartSample2(title: "Entrées mensuelle") ,
-              const BarChartSample2(title: "Entrées annuelle")
+              BarChartSample(title: 'Entrée hebdomadaire', jsonString:'expenses_days_data.json', period: Constants.days) ,
+              BarChartSample(title: 'Entrée annuelle', jsonString:'expenses_year_data.json', period: Constants.months)
             ],
           ),
         )

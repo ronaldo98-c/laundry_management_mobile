@@ -81,6 +81,8 @@ flutter:
     - assets/images/machine.jpeg
     - assets/images/fer.jpeg
     - assets/images/black-girl.png
+    - assets/expenses_year_data.json
+    - assets/expenses_days_data.json
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

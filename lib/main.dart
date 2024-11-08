@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:laundry_management_mobile/blocs/app.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:laundry_management_mobile/screens/splash_screen.dart';
 import 'package:laundry_management_mobile/controllers/login_controller.dart';
 
@@ -17,12 +18,21 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AppBloc(loginController: loginController)..add(AppStarted()),
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(fontFamily: 'Montserrat-Light'),
-        home: const SplashScreen(),
-      ),
+      create: (context) =>
+          AppBloc(loginController: loginController)..add(AppStarted()),
+      child: ScreenUtilInit(
+          builder: (context, child) => MaterialApp(
+                debugShowCheckedModeBanner: false,
+                theme: ThemeData(
+                  fontFamily: 'Montserrat-Light',
+                  scaffoldBackgroundColor: Colors.white,
+                ),
+                home: const SplashScreen(),
+              ),
+          designSize: const Size(360, 640),
+          minTextAdapt: true,
+          splitScreenMode: true
+        ),
     );
   }
 }

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:laundry_management_mobile/blocs/app.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:laundry_management_mobile/screens/widgets/profile_widget.dart';
 
 class SettingScreen extends StatelessWidget {
@@ -16,50 +19,50 @@ class SettingScreen extends StatelessWidget {
         child:  Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-             const SizedBox(
-              height: 10,
+            SizedBox(
+              height: 10.h,
             ),
-            const Text(
+            Text(
               'Paramètres',
               style: TextStyle(
                   color: Colors.black,
-                  fontSize: 20,
+                  fontSize: 20.sp,
                   fontWeight: FontWeight.bold
               ),
             ),
-            const Text(
+            Text(
               "Option de configuration de l'application",
               style: TextStyle(
                 color: Colors.black,
-                fontSize: 16,
+                fontSize: 14.sp,
                 fontWeight: FontWeight.w300,
               ),
             ),
-            const SizedBox(
-              height: 30,
+            SizedBox(
+              height: 10.h,
             ),
             SizedBox(
               height: size.height * .7,
               width: size.width,
-              child: const Column(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  ProfileWidget(
+                  const ProfileWidget(
                     icon: Icons.person,
                     title: 'Mon profil',
                     subTitle: 'Consultez votre profil'
                   ),
-                  ProfileWidget(
+                  const ProfileWidget(
                     icon: Icons.language,
                     title: 'Langues',
                     subTitle: 'Français'
                   ),
-                  ProfileWidget(
+                  const ProfileWidget(
                     icon: Icons.chat,
                     title: 'FAQs',
                     subTitle: 'Informations sur l\'application'
                   ),
-                  ProfileWidget(
+                  const ProfileWidget(
                     icon: Icons.share,
                     title: 'Partager l \'application',
                     subTitle: 'Inviter vos amis'
@@ -67,7 +70,34 @@ class SettingScreen extends StatelessWidget {
                   ProfileWidget(
                     icon: Icons.logout,
                     title: 'Se deconnecter',
-                    subTitle: 'Terminer votre session'
+                    subTitle: 'Terminer votre session',
+                    onTap: () {
+                      // Afficher la boîte de confirmation
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('Confirmation'),
+                            content: const Text('Êtes-vous sûr de vouloir vous déconnecter ?'),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop(); // Fermer la boîte de dialogue
+                                },
+                                child: const Text('Annuler'),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  BlocProvider.of<AppBloc>(context)
+                                              .add(LoggedOut());
+                                },
+                                child: const Text('Se déconnecter'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
                   ),
                 ],
               ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-//import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:laundry_management_mobile/constants/constant.dart';
 
 class ExpenseIncomeData extends StatefulWidget {
@@ -23,12 +23,12 @@ class _ExpenseIncomeDataState extends State<ExpenseIncomeData> {
           Constants.darkBlueColor,
           Colors.white,
         ),
-        const SizedBox(width: 30), 
+        SizedBox(width: 30.w), 
         expenseIncomeContainer(
           context,
           Icons.arrow_downward,
-          "Sorties",
-          2100.00,
+          "Kilos",
+          15.15,
           Colors.white,
           Constants.darkBlueColor,
         ),
@@ -39,11 +39,11 @@ class _ExpenseIncomeDataState extends State<ExpenseIncomeData> {
   Widget expenseIncomeContainer(BuildContext context, IconData icon,
       String text, double price, Color color, Color textColor) {
     return Container(
-      height: 50,
-      width: 150,
+      height: 50.h,
+      width: 150.w,
       decoration: BoxDecoration(
         color: color,
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(10.r),
       ),
       child: Row(
         children: [
@@ -60,17 +60,17 @@ class _ExpenseIncomeDataState extends State<ExpenseIncomeData> {
                 text,
                 style: TextStyle(
                   color: textColor,
-                  fontSize: 13,
+                  fontSize: 13.sp
                 ),
               ),
               Text(
                 price.toString(),
                 style: TextStyle(
                   color: textColor,
-                  fontSize: 17,
-                  fontWeight: FontWeight.bold,
+                  fontSize: 17.sp,
+                  fontWeight: FontWeight.bold
                 ),
-              ),
+              )
             ],
           ),
         ],

@@ -47,30 +47,12 @@ class _EntryDetailScreenState extends State<EntryDetailScreen> {
                     width: 40,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(25),
-                      color: Constants.primaryColor.withOpacity(.15),
+                      color: Constants.darkBlueColor.withOpacity(.15),
                     ),
                     child: Icon(
                       Icons.close,
-                      color: Constants.primaryColor,
+                      color: Constants.darkBlueColor,
                     ),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    debugPrint('favorite');
-                  },
-                  child: Container(
-                    height: 40,
-                    width: 40,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(25),
-                      color: Constants.primaryColor.withOpacity(.15),
-                    ),
-                    child: IconButton(
-                        onPressed: () {},
-                        icon: Icon(Icons.favorite,
-                          color: Constants.primaryColor,
-                        )),
                   ),
                 ),
               ],
@@ -122,7 +104,7 @@ class _EntryDetailScreenState extends State<EntryDetailScreen> {
               ),
             ),
           ),
-          Positioned(
+          /*Positioned(
             bottom: 0,
             left: 0,
             right: 0,
@@ -131,7 +113,7 @@ class _EntryDetailScreenState extends State<EntryDetailScreen> {
               height: size.height * .5,
               width: size.width,
               decoration: BoxDecoration(
-                color: Constants.primaryColor.withOpacity(.4),
+                color: Constants.darkBlueColor.withOpacity(.4),
                 borderRadius: const BorderRadius.only(
                   topRight: Radius.circular(30),
                   topLeft: Radius.circular(30),
@@ -150,7 +132,7 @@ class _EntryDetailScreenState extends State<EntryDetailScreen> {
                           Text(
                             entries[widget.entryId].state,
                             style: TextStyle(
-                              color: Constants.primaryColor,
+                              color: Constants.darkBlueColor.withOpacity(.4),
                               fontWeight: FontWeight.bold,
                               fontSize: 30.0,
                             ),
@@ -174,14 +156,9 @@ class _EntryDetailScreenState extends State<EntryDetailScreen> {
                             entries[widget.entryId].amountAdvance.toString(),
                             style: TextStyle(
                               fontSize: 30.0,
-                              color: Constants.primaryColor,
+                              color: Constants.darkBlueColor.withOpacity(.4),
                             ),
-                          ),
-                          Icon(
-                            Icons.star,
-                            size: 30.0,
-                            color: Constants.primaryColor,
-                          ),
+                          )
                         ],
                       ),
                     ],
@@ -203,62 +180,9 @@ class _EntryDetailScreenState extends State<EntryDetailScreen> {
                 ],
               ),
             ),
-          ),
+          ),*/
         ],
-      ),
-      floatingActionButton: SizedBox(
-        width: size.width * .9,
-        height: 50,
-        child: Row(
-          children: [
-            Container(
-                height: 50,
-                width: 50,
-                decoration: BoxDecoration(
-                    color: Constants.primaryColor.withOpacity(.5),
-                    borderRadius: BorderRadius.circular(50),
-                    boxShadow: [
-                      BoxShadow(
-                        offset: const Offset(0, 1),
-                        blurRadius: 5,
-                        color: Constants.primaryColor.withOpacity(.3),
-                      ),
-                    ]),
-                child: IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.shopping_cart,
-                      color: Colors.white,
-                    ))),
-            const SizedBox(
-              width: 20,
-            ),
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                    color: Constants.primaryColor,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                      BoxShadow(
-                        offset: const Offset(0, 1),
-                        blurRadius: 5,
-                        color: Constants.primaryColor.withOpacity(.3),
-                      )
-                    ]),
-                child: const Center(
-                  child: Text(
-                    'BUY NOW',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20.0,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+      )
     );
   }
 }
@@ -286,7 +210,7 @@ class EntryFeature extends StatelessWidget {
         Text(
           entryFeature,
           style: TextStyle(
-            color: Constants.primaryColor,
+            color: Constants.darkBlueColor.withOpacity(.3),
             fontSize: 18.0,
             fontWeight: FontWeight.bold,
           ),

@@ -10,12 +10,13 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   
   AppBloc({required this.loginController}) : super(UnauthenticatedState()) {
     on<AppStarted>((event, emit) async {
-      final bool hasToken = await loginController.hasToken();
+      /*final bool hasToken = await loginController.hasToken();
       if (hasToken) {
         emit(AuthenticatedState());
       } else {
         emit(UnauthenticatedState());
-      }
+      } */
+      emit(AuthenticatedState());
     });
 
     on<LoginRequested>((event, emit) async {

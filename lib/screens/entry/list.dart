@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:laundry_management_mobile/data/data.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:laundry_management_mobile/models/entry.dart';
-//import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:laundry_management_mobile/screens/widgets/entry_item.dart';
 
 class EntryScreen extends StatefulWidget {
@@ -28,12 +28,12 @@ class _EntryScreenState extends State<EntryScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const ListTile(
+                    ListTile(
                       title: Text(
                         'Tout vos dépôts',
                         style: TextStyle(
                           color: Colors.black,
-                          fontSize: 20,
+                          fontSize: 20.sp,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -41,12 +41,12 @@ class _EntryScreenState extends State<EntryScreen> {
                         '10 au total',
                         style: TextStyle(
                           color: Colors.grey,
-                          fontSize: 14,
+                          fontSize: 14.sp,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                   ),
-                  const SizedBox(height: 10),
+                  SizedBox(height: 10.h),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -58,19 +58,19 @@ class _EntryScreenState extends State<EntryScreen> {
                             filled: true,
                             fillColor: Colors.grey[200], // Correction ici
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
-                              borderSide: BorderSide.none,
+                              borderRadius: BorderRadius.circular(16.r),
+                              borderSide: BorderSide.none
                             ),
                           ),
                         ),
                       ),
-                      const SizedBox(width: 10),
+                      SizedBox(width: 10.w),
                       Container(
-                        width: 50,
-                        height: 47,
+                        width: 45.w,
+                        height: 35.h,
                         decoration: BoxDecoration(
                           color: Colors.grey[200],
-                          borderRadius: BorderRadius.circular(16),
+                          borderRadius: BorderRadius.circular(15.r)
                         ),
                         child: IconButton(
                           onPressed: () {},
@@ -79,7 +79,7 @@ class _EntryScreenState extends State<EntryScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 10),
+                  SizedBox(height: 10.h),
                   SizedBox(
                     height: size.height, // Assurez-vous que la hauteur est définie
                     child: ListView.builder(

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:laundry_management_mobile/root.dart';
 import 'package:laundry_management_mobile/blocs/app.dart';
 import 'package:laundry_management_mobile/theme/theme.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:laundry_management_mobile/widgets/custom_scaffold.dart';
 import 'package:laundry_management_mobile/screens/authentication/signup_screen.dart';
 
@@ -33,6 +35,13 @@ class _SignInScreenState extends State<SignInScreen> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.message)),
             );
+          } else if(state is AuthenticatedState) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (e) =>  const Root(),
+              ),
+            );
           }
         },
         child: BlocBuilder<AppBloc, AppState>(
@@ -41,19 +50,19 @@ class _SignInScreenState extends State<SignInScreen> {
             return CustomScaffold (
               child: Column(
                   children: [
-                    const Expanded(
+                    Expanded(
                       flex: 1,
-                      child: SizedBox(height: 10),
+                      child: SizedBox(height: 10.h)
                     ),
                     Expanded(
                       flex: 7,
                       child: Container(
-                        padding: const EdgeInsets.fromLTRB(25.0, 50.0, 25.0, 20.0),
-                        decoration: const BoxDecoration(
+                        padding: EdgeInsets.fromLTRB(25.w, 50.h, 25.w, 20.h),
+                        decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(40.0),
-                            topRight: Radius.circular(40.0),
+                            topLeft: Radius.circular(40.r),
+                            topRight: Radius.circular(40.r)
                           ),
                         ),
                         child: SingleChildScrollView(
@@ -65,12 +74,12 @@ class _SignInScreenState extends State<SignInScreen> {
                                 Text(
                                   'Se connecter',
                                   style: TextStyle(
-                                    fontSize: 30.0,
+                                    fontSize: 30.sp,
                                     fontWeight: FontWeight.w900,
                                     color: lightColorScheme.primary,
                                   ),
                                 ),
-                                const SizedBox(height: 40.0),
+                                SizedBox(height: 40.h),
                                 TextFormField(
                                   controller: _username,
                                   validator: (value) {
@@ -85,15 +94,15 @@ class _SignInScreenState extends State<SignInScreen> {
                                     hintStyle: const TextStyle(color: Colors.black26),
                                     border: OutlineInputBorder(
                                       borderSide: const BorderSide(color: Colors.black12),
-                                      borderRadius: BorderRadius.circular(10),
+                                      borderRadius: BorderRadius.circular(10.r)
                                     ),
                                     enabledBorder: OutlineInputBorder(
                                       borderSide: const BorderSide(color: Colors.black12),
-                                      borderRadius: BorderRadius.circular(10),
+                                      borderRadius: BorderRadius.circular(10.r)
                                     ),
                                   ),
                                 ),
-                                const SizedBox(height: 25.0),
+                                SizedBox(height: 25.h),
                                 TextFormField(
                                   controller: _password,
                                   obscureText: true,
@@ -111,34 +120,39 @@ class _SignInScreenState extends State<SignInScreen> {
                                     hintStyle: const TextStyle(color: Colors.black26),
                                     border: OutlineInputBorder(
                                       borderSide: const BorderSide(color: Colors.black12),
-                                      borderRadius: BorderRadius.circular(10),
+                                      borderRadius: BorderRadius.circular(10.r),
                                     ),
                                     enabledBorder: OutlineInputBorder(
                                       borderSide: const BorderSide(color: Colors.black12),
-                                      borderRadius: BorderRadius.circular(10),
+                                      borderRadius: BorderRadius.circular(10.r),
                                     ),
                                   ),
                                 ),
-                                const SizedBox(height: 25.0),
+                                SizedBox(height: 25.h),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Row(
-                                      children: [
-                                        Checkbox(
-                                          value: rememberPassword,
-                                          onChanged: (bool? value) {
-                                            setState(() {
-                                              rememberPassword = value!;
-                                            });
-                                          },
-                                          activeColor: lightColorScheme.primary,
-                                        ),
-                                        const Text(
-                                          'Se souvenir de moi',
-                                          style: TextStyle(color: Colors.black45),
-                                        ),
-                                      ],
+                                    Expanded(
+                                      child: Row(
+                                        children: [
+                                          Checkbox(
+                                            value: rememberPassword,
+                                            onChanged: (bool? value) {
+                                              setState(() {
+                                                rememberPassword = value!;
+                                              });
+                                            },
+                                            activeColor: lightColorScheme.primary,
+                                          ),
+                                          const Flexible(
+                                            child: Text(
+                                              'Se souvenir de moi',
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(color: Colors.black45),
+                                              maxLines: 1,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                     GestureDetector(
                                       child: Text(
@@ -151,7 +165,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                     ),
                                   ],
                                 ),
-                                const SizedBox(height: 25.0),
+                                SizedBox(height: 25.h),
                                 SizedBox(
                                   width: double.infinity,
                                   child: ElevatedButton(
@@ -160,7 +174,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                     : () {
                                       if (_formSignInKey.currentState!.validate()) {
                                         if (rememberPassword) {
-                                          BlocProvider.of<AppBloc>(context)
+                                            BlocProvider.of<AppBloc>(context)
                                               .add(LoginRequested(username: _username.text , password: _password.text));
                                         } else {
                                           ScaffoldMessenger.of(context).showSnackBar(
@@ -177,35 +191,35 @@ class _SignInScreenState extends State<SignInScreen> {
                                              : const Text('Se connecter'),
                                   ),
                                 ),
-                                const SizedBox(height: 25.0),
+                                SizedBox(height: 25.h),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Expanded(
-                                      child: Divider(
-                                        thickness: 0.7,
-                                        color: Colors.grey.withOpacity(0.5),
-                                      ),
+                                        child: Divider(
+                                          thickness: 0.7,
+                                          color: Colors.grey.withOpacity(0.5),
+                                        )
                                     ),
-                                    const Padding(
+                                    Padding(
                                       padding: EdgeInsets.symmetric(
-                                        vertical: 0,
-                                        horizontal: 10,
+                                        vertical: 0.h,
+                                        horizontal: 10.w
                                       ),
-                                      child: Text(
+                                      child: const Text(
                                         'Se connecter avec',
                                         style: TextStyle(color: Colors.black45),
-                                      ),
+                                      )
                                     ),
                                     Expanded(
                                       child: Divider(
                                         thickness: 0.7,
                                         color: Colors.grey.withOpacity(0.5),
-                                      ),
-                                    ),
-                                  ],
+                                      )
+                                    )
+                                  ]
                                 ),
-                                const SizedBox(height: 25.0),
+                                SizedBox(height: 25.h),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   children: [
@@ -213,7 +227,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                     Brand(Brands.google)
                                   ],
                                 ),
-                                const SizedBox(height: 25.0),
+                                SizedBox(height: 25.h),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -221,7 +235,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                       'Je n\'ai pas de compte? ',
                                       style: TextStyle(color: Colors.black45),
                                     ),
-                                    const SizedBox(width: 5),
+                                    SizedBox(width: 5.w),
                                     GestureDetector(
                                       onTap: () {
                                         Navigator.push(
@@ -241,7 +255,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                     ),
                                   ],
                                 ),
-                                const SizedBox(height: 20.0),
+                                SizedBox(height: 20.h)
                               ],
                             ),
                           ),
