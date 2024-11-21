@@ -5,7 +5,7 @@ import 'package:laundry_management_mobile/root.dart';
 import 'package:laundry_management_mobile/blocs/app.dart';
 import 'package:laundry_management_mobile/theme/theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:laundry_management_mobile/widgets/custom_scaffold.dart';
+import 'package:laundry_management_mobile/screens/widgets/custom_scaffold.dart';
 import 'package:laundry_management_mobile/screens/authentication/signup_screen.dart';
 
 

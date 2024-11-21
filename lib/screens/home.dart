@@ -1,3 +1,4 @@
+import '../generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:laundry_management_mobile/data/data.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -77,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Content de te revoir,', style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w300, color: Colors.black)),
+            Text(S.of(context).hello, style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w300, color: Colors.black)),
             Text('Ronaldo Gantchi', style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold, color: Colors.black)),
           ],
         ),
@@ -88,7 +89,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Row _buildActionIcons() {
     return Row(
       children: [
-        IconButton(icon: const Icon(Icons.dark_mode_outlined, color: Colors.black), onPressed: () {}),
         IconButton(
           icon: Stack(
             children: [
@@ -235,7 +235,7 @@ class BalanceCard extends StatelessWidget {
           Text(
             balance.toStringAsFixed(2),
             style: TextStyle(
-              fontSize: 20.sp,
+              fontSize: 16.sp,
               fontWeight: FontWeight.bold,
               color: Colors.black
             ),
@@ -252,7 +252,7 @@ class Banner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 180.h,
+      height: 110.h,
       decoration: BoxDecoration(
         color: Constants.darkBlueColor,
         borderRadius: BorderRadius.circular(20.r)
@@ -262,7 +262,7 @@ class Banner extends StatelessWidget {
           // Contenu texte
           Positioned(
             left: 10.w, // Updated to use responsive width
-            top: 40.h,  // Updated to use responsive height
+            top: 10.h,  // Updated to use responsive height
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -296,11 +296,11 @@ class Banner extends StatelessWidget {
           // Image à droite
           Positioned(
             right: 5.w, // Updated to use responsive width
-            bottom: 30.h, // Updated to use responsive height
+            bottom: 10.h, // Updated to use responsive height
             child: Image.network(
               'assets/images/black-girl.png', // Remplacer par l'URL de ton image
-              width: 130.w, // Responsive width
-              height: 130.h, // Responsive height
+              width: 110.w, // Responsive width
+              height: 100.h, // Responsive height
               fit: BoxFit.cover
             ),
           ),

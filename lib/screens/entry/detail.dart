@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:laundry_management_mobile/data/data.dart';
-import 'package:laundry_management_mobile/models/entry.dart';
+/*import 'package:laundry_management_mobile/data/data.dart';
+import 'package:laundry_management_mobile/models/entry.dart'; */
 import 'package:laundry_management_mobile/constants/constant.dart';
 
 
@@ -23,199 +23,115 @@ class _EntryDetailScreenState extends State<EntryDetailScreen> {
     return !isSelected;
   }
 
-  @override
+ @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    List<Entry> entries = getEntries();
-
     return Scaffold(
-      body: Stack(
-        children: [
-          Positioned(
-            top: 50,
-            left: 20,
-            right: 20,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: Container(
-                    height: 40,
-                    width: 40,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(25),
-                      color: Constants.darkBlueColor.withOpacity(.15),
-                    ),
-                    child: Icon(
-                      Icons.close,
-                      color: Constants.darkBlueColor,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.white,
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Icon(
+            Icons.close,
+            color: Constants.darkBlueColor,
           ),
-          Positioned(
-            top: 100,
-            left: 20,
-            right: 20,
-            child: Container(
-              width: size.width * .8,
-              height: size.height * .8,
-              padding: const EdgeInsets.all(20),
-              child: Stack(
+        )
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('Liste des vêtements', style: TextStyle(fontWeight: FontWeight.bold)),
+            const SizedBox(height: 10.0), // Réduit l'espace après le titre
+            Flexible(
+              child: ListView(
+                shrinkWrap: true, // Réduit l'espace occupé par ListView
                 children: [
-                  const Positioned(
-                    top: 10,
-                    left: 0,
-                    child: SizedBox(
-                      height: 350,
-                    ),
-                  ),
-                  Positioned(
-                    top: 10,
-                    right: 0,
-                    child: SizedBox(
-                      height: 200,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          EntryFeature(
-                            title: entries[widget.entryId].paymentStatus,
-                            entryFeature: entries[widget.entryId].releaseDate,
-                          ),
-                          EntryFeature(
-                            title: entries[widget.entryId].paymentStatus,
-                            entryFeature: entries[widget.entryId].reference ,
-                          ),
-                          EntryFeature(
-                            title: entries[widget.entryId].paymentStatus,
-                            entryFeature: entries[widget.entryId].reference,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                  buildItem('Polo ~ Bleu ~ M', 'x 1'),
+                  buildItem('Pantalon ~ Noir ~ XL', 'x 2'),
+                  buildItem('Tshirt ~ Bleu ~ M', 'x 4')
                 ],
               ),
             ),
-          ),
-          /*Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Container(
-              padding: const EdgeInsets.only(top: 80, left: 30, right: 30),
-              height: size.height * .5,
-              width: size.width,
-              decoration: BoxDecoration(
-                color: Constants.darkBlueColor.withOpacity(.4),
-                borderRadius: const BorderRadius.only(
-                  topRight: Radius.circular(30),
-                  topLeft: Radius.circular(30),
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            entries[widget.entryId].state,
-                            style: TextStyle(
-                              color: Constants.darkBlueColor.withOpacity(.4),
-                              fontWeight: FontWeight.bold,
-                              fontSize: 30.0,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            r'$' + entries[widget.entryId].totalAmount.toString(),
-                            style: TextStyle(
-                              color: Constants.blackColor,
-                              fontSize: 24.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            entries[widget.entryId].amountAdvance.toString(),
-                            style: TextStyle(
-                              fontSize: 30.0,
-                              color: Constants.darkBlueColor.withOpacity(.4),
-                            ),
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 5.0,
-                  ),
-                  Expanded(
-                    child: Text(
-                      entries[widget.entryId].typeOfWash,
-                      textAlign: TextAlign.justify,
-                      style: TextStyle(
-                        height: 1.5,
-                        fontSize: 18,
-                        color: Constants.blackColor.withOpacity(.7),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),*/
-        ],
-      )
+            const SizedBox(height: 16.0), // Réduit l'espace entre la liste et l'offre
+            buildOfferSection(),
+            const Divider(),
+            buildEntryBreakdown(),
+          ],
+        ),
+      ),
     );
   }
-}
 
-class EntryFeature extends StatelessWidget {
-  final String entryFeature;
-  final String title;
-  const EntryFeature({
-    super.key,
-    required this.entryFeature,
-    required this.title,
-  });
 
-  @override
-  Widget build(BuildContext context) {
+  Widget buildItem(String name, String quantity) {
+    return ListTile(
+      contentPadding: EdgeInsets.zero,
+      leading: Container(
+        width: 60,
+        height: 60,
+        color: Colors.grey[300], // Placeholder for image
+      ),
+      title: Text(name),
+      subtitle: Text(quantity)
+    );
+  }
+
+  Widget buildOfferSection() {
+    return Container(
+      padding: const EdgeInsets.all(16.0),
+      decoration: BoxDecoration(
+        color: Colors.pink[50],
+        border: Border.all(color: Colors.pink),
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      child: const Row(
+        children: [
+          Icon(Icons.local_offer, color: Colors.pink),
+          SizedBox(width: 8.0),
+          Expanded(
+            child: Text('Une remise de 10% a été appliqué sur le montant total!',
+                style: TextStyle(color: Colors.pink)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildEntryBreakdown() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          title,
-          style: TextStyle(
-            color: Constants.blackColor,
-          ),
-        ),
-        Text(
-          entryFeature,
-          style: TextStyle(
-            color: Constants.darkBlueColor.withOpacity(.3),
-            fontSize: 18.0,
-            fontWeight: FontWeight.bold,
-          ),
-        )
+        const Text('Informations supplémentaires', style: TextStyle(fontWeight: FontWeight.bold)),
+        const SizedBox(height: 8.0),
+        buildEntryRow('Reference', 'lt0215633015'),
+        buildEntryRow('Total vêtement', '10'),
+        buildEntryRow('Total kilo', '2.5 kilos'),
+        buildEntryRow('Methode de paiement', 'En cash'),
+        buildEntryRow('Status de paiement', 'Soldé'),
+        buildEntryRow('Avance', '0 Xfa'),
+        buildEntryRow('Status de paiement', 'Soldé'),
+        const Divider(),
+        buildEntryRow('Total', '1500 xfa', isBold: true),
+        buildEntryRow('Avec remise', '1000 xfa', isBold: true),
+        buildEntryRow('Reste', '0 xfa', isBold: true),
       ],
+    );
+  }
+
+  Widget buildEntryRow(String label, String amount, {bool isBold = false}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(label, style: TextStyle(fontWeight: isBold ? FontWeight.bold : FontWeight.normal)),
+          Text(amount, style: TextStyle(fontWeight: isBold ? FontWeight.bold : FontWeight.normal)),
+        ],
+      ),
     );
   }
 }

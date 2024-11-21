@@ -3,6 +3,7 @@ import 'package:laundry_management_mobile/data/data.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:laundry_management_mobile/models/entry.dart';
 import 'package:laundry_management_mobile/screens/widgets/entry_item.dart';
+import 'package:laundry_management_mobile/screens/widgets/filter_modal.dart';
 
 class EntryScreen extends StatefulWidget {
   const EntryScreen({super.key});
@@ -73,7 +74,9 @@ class _EntryScreenState extends State<EntryScreen> {
                           borderRadius: BorderRadius.circular(15.r)
                         ),
                         child: IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            FilterModal.showAddModal(context);
+                          },
                           icon: const Icon(Icons.filter_list),
                         ),
                       ),

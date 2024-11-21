@@ -50,14 +50,16 @@ class EntryItem extends StatelessWidget {
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.black,
-                          fontSize: 16.sp)
+                          fontSize: 14.sp)
                     ),
                     Text(
-                      entries[index].typeOfWash,
+                      entries[index].typeOfWash.length > 22
+                          ? '${entries[index].typeOfWash.substring(0, 22)}...' // Limite à 20 caractères
+                          : entries[index].typeOfWash,
                       style: TextStyle(
                           fontWeight: FontWeight.w300,
                           color: Colors.black,
-                          fontSize: 14.sp)
+                          fontSize: 12.sp),// Ajoute des points de suspension
                     )
                   ],
                 )
@@ -70,11 +72,11 @@ class EntryItem extends StatelessWidget {
                     style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
-                        fontSize: 16.sp)
+                        fontSize: 13.sp)
                   ),
                   Text(
                     entries[index].createdAt,
-                    style: TextStyle(color: Colors.grey, fontSize: 14.sp),
+                    style: TextStyle(color: Colors.grey, fontSize: 12.sp),
                   )
                 ],
               ),

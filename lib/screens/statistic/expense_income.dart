@@ -39,6 +39,7 @@ class _ExpenseIncomeDataState extends State<ExpenseIncomeData> {
   Widget expenseIncomeContainer(BuildContext context, IconData icon,
       String text, double price, Color color, Color textColor) {
     return Container(
+      padding: EdgeInsets.symmetric(vertical : 5.h),
       height: 50.h,
       width: 150.w,
       decoration: BoxDecoration(
@@ -46,13 +47,11 @@ class _ExpenseIncomeDataState extends State<ExpenseIncomeData> {
         borderRadius: BorderRadius.circular(10.r),
       ),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          IconButton(
-            onPressed: () {},
-            icon: Icon(
+          Icon(
               icon,
               color: textColor,
-            ),
           ),
           Column(
             children: [
