@@ -3,7 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:laundry_management_mobile/constants/constant.dart';
 
 class ExpenseIncomeData extends StatefulWidget {
-  const ExpenseIncomeData({super.key});
+  final double totalEntries;
+  final double totalKilos;
+
+  const ExpenseIncomeData({super.key, required this.totalEntries, required this.totalKilos});
 
   @override
   State<ExpenseIncomeData> createState() => _ExpenseIncomeDataState();
@@ -19,7 +22,7 @@ class _ExpenseIncomeDataState extends State<ExpenseIncomeData> {
           context,
           Icons.arrow_upward,
           "Entrées",
-          4100.00,
+          widget.totalEntries,
           Constants.darkBlueColor,
           Colors.white,
         ),
@@ -28,7 +31,7 @@ class _ExpenseIncomeDataState extends State<ExpenseIncomeData> {
           context,
           Icons.arrow_downward,
           "Kilos",
-          15.15,
+          widget.totalKilos,
           Colors.white,
           Constants.darkBlueColor,
         ),

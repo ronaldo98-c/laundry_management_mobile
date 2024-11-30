@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:laundry_management_mobile/constants/constant.dart';
+import 'package:laundry_management_mobile/models/entry.dart';
+
 
 class FilterModal {
-  static Future<void> showAddModal(BuildContext context) async {
-    //final TextEditingController textField1Controller = TextEditingController();
+  final List<Entry> entryList;
+  final Function(List<Entry>) updateEntryList;
+
+  FilterModal(this.entryList, this.updateEntryList);
+
+  static Future<void> showAddModal(BuildContext context, List<Entry> entryList, Function(List<Entry>) updateEntryList) async {
     final TextEditingController textField2Controller = TextEditingController();
 
     return showDialog<void>(
@@ -13,29 +18,12 @@ class FilterModal {
       builder: (BuildContext context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(0.r), // Retirer les bordures
+            borderRadius: BorderRadius.circular(0),
           ),
           contentPadding: const EdgeInsets.all(30),
           content: SingleChildScrollView(
             child: Column(
               children: [
-                DropdownButtonFormField<String>(
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Etat',
-                  ),
-                  items: <String>['Lavage', 'Sechage', 'Repassage'] // Replace with your options
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                  onChanged: (String? newValue) {
-                    
-                  },
-                ),
-                SizedBox(height: 15.h),
                 TextFormField(
                   controller: textField2Controller,
                   decoration: const InputDecoration(
@@ -56,16 +44,16 @@ class FilterModal {
                     }
                   },
                 ),
-              ]
+              ],
             )
           ),
           actions: <Widget>[
             TextButton(
               style: TextButton.styleFrom(
                 foregroundColor: Colors.white,
-                backgroundColor: Colors.red ,
+                backgroundColor: Colors.red,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(0.r), // Assurez-vous que le rayon est 0
+                  borderRadius: BorderRadius.circular(0),
                 ),
                 minimumSize: const Size(100, 50)
               ),
@@ -77,21 +65,40 @@ class FilterModal {
             TextButton(
               style: TextButton.styleFrom(
                 foregroundColor: Colors.white,
-                backgroundColor: Constants.darkBlueColor ,
+                backgroundColor: Constants.darkBlueColor,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(0.r), // Assurez-vous que le rayon est 0
+                  borderRadius: BorderRadius.circular(0),
                 ),
                 minimumSize: const Size(100, 50)
               ),
-              child: const Text('Appliquer'),
+              child: const Text('Filtrer'),
               onPressed: () {
-                // Add your save logic here
-                Navigator.of(context).pop(); // Close modal after saving
+                List<Entry> filteredList = filterEntryList(entryList, textField2Controller.text); // Appeler la fonction de filtrage
+                updateEntryList(filteredList); // Mettre à jour entryList dans le parent
+                Navigator.of(context).pop(); // Close modal after filtering
               },
             ),
           ],
         );
       },
     );
+  }
+
+  // Fonction pour filtrer entryList en fonction de createdAt
+  static List<Entry> filterEntryList(List<Entry> entryList, String date) {
+    DateTime? filterDate = DateTime.tryParse(date); // Convertir la date en DateTime
+    if (filterDate != null) {
+      List<Entry> filteredList = entryList.where((entry) {
+        DateTime entryDate = DateTime.parse(entry.createdAt).toLocal(); // Convertir Entry.createdAt en DateTime
+        return entryDate.year == filterDate.year && 
+               entryDate.month == filterDate.month && 
+               entryDate.day == filterDate.day; // Comparer uniquement les dates
+      }).toList();
+      
+      return filteredList; // Retourner la liste filtrée
+    } else {
+      debugPrint('Date invalide'); // Gérer les dates invalides
+      return []; // Retourner une liste vide en cas de date invalide
+    }
   }
 }

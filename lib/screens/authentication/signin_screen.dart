@@ -1,33 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:icons_plus/icons_plus.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:laundry_management_mobile/root.dart';
 import 'package:laundry_management_mobile/blocs/app.dart';
 import 'package:laundry_management_mobile/theme/theme.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:laundry_management_mobile/screens/widgets/custom_scaffold.dart';
 import 'package:laundry_management_mobile/screens/authentication/signup_screen.dart';
-
+import 'package:laundry_management_mobile/screens/authentication/reset_password.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
-  static const routeName = '/sign-in';
 
   @override
   State<SignInScreen> createState() => _SignInScreenState();
 }
 
-
 class _SignInScreenState extends State<SignInScreen> {
 
-  bool rememberPassword = false;
-  final _username = TextEditingController();
+  bool _eyeClosed = false;
+  final _email = TextEditingController();
   final _password = TextEditingController();
-  final _formSignInKey = GlobalKey<FormState>();
+  
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: BlocListener<AppBloc, AppState>(
         listener: (context, state) {
@@ -35,235 +29,172 @@ class _SignInScreenState extends State<SignInScreen> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.message)),
             );
-          } else if(state is AuthenticatedState) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (e) =>  const Root(),
-              ),
-            );
           }
         },
         child: BlocBuilder<AppBloc, AppState>(
           builder: (context, state) {
             bool isLoading = state is LoginLoadingState;
-            return CustomScaffold (
+            return CustomScaffold(
               child: Column(
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: SizedBox(height: 10.h)
-                    ),
-                    Expanded(
-                      flex: 7,
-                      child: Container(
-                        padding: EdgeInsets.fromLTRB(25.w, 50.h, 25.w, 20.h),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(40.r),
-                            topRight: Radius.circular(40.r)
-                          ),
+                children: [
+                  const Expanded(
+                    flex: 1,
+                    child: SizedBox(height: 10),
+                  ),
+                  Expanded(
+                    flex: 7,
+                    child: Container(
+                      padding: const EdgeInsets.fromLTRB(25.0, 50.0, 25.0, 20.0),
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(40),
+                          topRight: Radius.circular(40),
                         ),
-                        child: SingleChildScrollView(
-                          child: Form(
-                            key: _formSignInKey,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Se connecter',
-                                  style: TextStyle(
-                                    fontSize: 30.sp,
-                                    fontWeight: FontWeight.w900,
-                                    color: lightColorScheme.primary,
+                      ),
+                      child: SingleChildScrollView(
+                        child: Form(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Se connecter',
+                                style: TextStyle(
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.w900,
+                                  color: lightColorScheme.primary,
+                                ),
+                              ),
+                              const SizedBox(height: 40),
+                              TextFormField(
+                                controller: _email,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Veuillez entrer votre e-mail';
+                                  }
+                                  return null;
+                                },
+                                decoration: InputDecoration(
+                                  label: const Text('E-mail'),
+                                  hintText: 'Entrez votre e-mail',
+                                  hintStyle: const TextStyle(color: Colors.black26),
+                                  border: OutlineInputBorder(
+                                    borderSide: const BorderSide(color: Colors.black12),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(color: Colors.black12),
+                                    borderRadius: BorderRadius.circular(10),
                                   ),
                                 ),
-                                SizedBox(height: 40.h),
-                                TextFormField(
-                                  controller: _username,
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Veuillez entrer votre e-mail';
-                                    }
-                                    return null;
-                                  },
-                                  decoration: InputDecoration(
-                                    label: const Text('E-mail'),
-                                    hintText: 'Entrez votre e-mail',
-                                    hintStyle: const TextStyle(color: Colors.black26),
-                                    border: OutlineInputBorder(
-                                      borderSide: const BorderSide(color: Colors.black12),
-                                      borderRadius: BorderRadius.circular(10.r)
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(color: Colors.black12),
-                                      borderRadius: BorderRadius.circular(10.r)
-                                    ),
+                              ),
+                              const SizedBox(height: 25),
+                              TextFormField(
+                                controller: _password,
+                                obscureText: _eyeClosed,
+                                obscuringCharacter: '*',
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Veuillez entrer le mot de passe';
+                                  }
+                                  return null;
+                                },
+                                decoration: InputDecoration(
+                                  label: const Text('Mot de passe'),
+                                  suffixIcon: IconButton(
+                                    icon: _eyeClosed ? const Icon(Icons.visibility_off) : const Icon(Icons.remove_red_eye),
+                                    onPressed: () => setState(() => _eyeClosed = !_eyeClosed),
+                                  ),
+                                  hintText: 'Entrer le mot de passe',
+                                  hintStyle: const TextStyle(color: Colors.black26),
+                                  border: OutlineInputBorder(
+                                    borderSide: const BorderSide(color: Colors.black12),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(color: Colors.black12),
+                                    borderRadius: BorderRadius.circular(10),
                                   ),
                                 ),
-                                SizedBox(height: 25.h),
-                                TextFormField(
-                                  controller: _password,
-                                  obscureText: true,
-                                  obscuringCharacter: '*',
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Veuillez entrer le mot de passe';
-                                    }
-                                    return null;
-                                  },
-                                  decoration: InputDecoration(
-                                    label: const Text('Mot de passe'),
-                                    suffixIcon: const Icon(Icons.remove_red_eye),
-                                    hintText: 'Entrer le mot de passe',
-                                    hintStyle: const TextStyle(color: Colors.black26),
-                                    border: OutlineInputBorder(
-                                      borderSide: const BorderSide(color: Colors.black12),
-                                      borderRadius: BorderRadius.circular(10.r),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(color: Colors.black12),
-                                      borderRadius: BorderRadius.circular(10.r),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(height: 25.h),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: Row(
-                                        children: [
-                                          Checkbox(
-                                            value: rememberPassword,
-                                            onChanged: (bool? value) {
-                                              setState(() {
-                                                rememberPassword = value!;
-                                              });
-                                            },
-                                            activeColor: lightColorScheme.primary,
-                                          ),
-                                          const Flexible(
-                                            child: Text(
-                                              'Se souvenir de moi',
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(color: Colors.black45),
-                                              maxLines: 1,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    GestureDetector(
-                                      child: Text(
-                                        'Mot de passe oublié?',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: lightColorScheme.primary,
+                              ),
+                              const SizedBox(height: 25.0),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const SizedBox(width: 50),
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (e) => const ResetPasswordScreen(),
                                         ),
+                                      );
+                                    },
+                                    child: Text(
+                                      'Mot de passe oublié?',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: lightColorScheme.primary,
                                       ),
                                     ),
-                                  ],
-                                ),
-                                SizedBox(height: 25.h),
-                                SizedBox(
-                                  width: double.infinity,
-                                  child: ElevatedButton(
-                                    onPressed: isLoading
-                                    ? null
-                                    : () {
-                                      if (_formSignInKey.currentState!.validate()) {
-                                        if (rememberPassword) {
-                                            BlocProvider.of<AppBloc>(context)
-                                              .add(LoginRequested(username: _username.text , password: _password.text));
-                                        } else {
-                                          ScaffoldMessenger.of(context).showSnackBar(
-                                            const SnackBar(
-                                              content: Text(
-                                                'Veuillez accepter le traitement des données personnelles',
-                                              ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 25),
+                              SizedBox(
+                                width: double.infinity,
+                                child: ElevatedButton(
+                                  onPressed: isLoading
+                                      ? null
+                                      : () {
+                                          BlocProvider.of<AppBloc>(context).add(
+                                            LoginRequested(
+                                              username: _email.text,
+                                              password: _password.text,
                                             ),
                                           );
-                                        }
-                                      }
-                                    },
-                                    child:  isLoading ? const CircularProgressIndicator( color: Colors.white) 
-                                             : const Text('Se connecter'),
+                                        },
+                                  child: isLoading
+                                      ? const CircularProgressIndicator(color: Colors.white)
+                                      : const Text('Se connecter'),
+                                ),
+                              ),
+                              const SizedBox(height: 25),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Text(
+                                    'Je n\'ai pas de compte? ',
+                                    style: TextStyle(color: Colors.black45),
                                   ),
-                                ),
-                                SizedBox(height: 25.h),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Expanded(
-                                        child: Divider(
-                                          thickness: 0.7,
-                                          color: Colors.grey.withOpacity(0.5),
-                                        )
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.symmetric(
-                                        vertical: 0.h,
-                                        horizontal: 10.w
-                                      ),
-                                      child: const Text(
-                                        'Se connecter avec',
-                                        style: TextStyle(color: Colors.black45),
-                                      )
-                                    ),
-                                    Expanded(
-                                      child: Divider(
-                                        thickness: 0.7,
-                                        color: Colors.grey.withOpacity(0.5),
-                                      )
-                                    )
-                                  ]
-                                ),
-                                SizedBox(height: 25.h),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Brand(Brands.facebook_f),
-                                    Brand(Brands.google)
-                                  ],
-                                ),
-                                SizedBox(height: 25.h),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Text(
-                                      'Je n\'ai pas de compte? ',
-                                      style: TextStyle(color: Colors.black45),
-                                    ),
-                                    SizedBox(width: 5.w),
-                                    GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (e) => const SignUpScreen(),
-                                          ),
-                                        );
-                                      },
-                                      child: Text(
-                                        'S\'inscrire',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: lightColorScheme.primary,
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (e) => const SignUpScreen(),
                                         ),
+                                      );
+                                    },
+                                    child: Text(
+                                      'S\'inscrire',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: lightColorScheme.primary,
                                       ),
                                     ),
-                                  ],
-                                ),
-                                SizedBox(height: 20.h)
-                              ],
-                            ),
+                                  ),
+                                ],
+                              )
+                            ],
                           ),
                         ),
                       ),
                     ),
-                  ],
-              )
+                  ),
+                ],
+              ),
             );
           },
         ),

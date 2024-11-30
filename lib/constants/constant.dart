@@ -8,6 +8,7 @@ class Constants {
   static var blackColor = Colors.black;
   static var greyColor = Colors.grey[200];
   static var darkGreyColor = Colors.grey;
+  static var singleGreyColor =  const Color.fromRGBO(231, 232, 235,1);
   
 
   //Onboarding texts

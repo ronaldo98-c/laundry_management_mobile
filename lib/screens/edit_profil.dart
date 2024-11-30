@@ -1,16 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:laundry_management_mobile/blocs/app.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:laundry_management_mobile/constants/constant.dart';
+import 'package:laundry_management_mobile/controllers/api_controller.dart';
 
-class EditProfileScreen extends StatelessWidget {
 
-  EditProfileScreen({super.key});
+class EditProfileScreen extends StatefulWidget {
+  const EditProfileScreen({super.key});
 
-  final TextEditingController fullNameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController phoneController = TextEditingController();
-  final TextEditingController dobController = TextEditingController();
+  @override
+  State<EditProfileScreen> createState() => _EditProfileScreenState();
+}
+
+class _EditProfileScreenState extends State<EditProfileScreen> {
+  bool isLoading = false;
+  late ApiController apiController;
+  
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController dobController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    apiController = ApiController();
+  }
+
+  void updateProfil(obj) {
+    setState(() => isLoading = true);
+    apiController.postData('change/password', obj).then((data) {
+      setState(() => isLoading = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content:  Text("Account successfully updated")),
+      );
+      BlocProvider.of<AppBloc>(context).add(LoggedOut());
+    }).catchError((error) {
+      setState(() => isLoading = false);
+      debugPrint("Erreur lors de la récupération des données : ${error.toString()}");
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +66,7 @@ class EditProfileScreen extends StatelessWidget {
         child: Column(
           children: [
             TextField(
-              controller: fullNameController,
+              controller: firstNameController,
               decoration: const InputDecoration(
                 labelText: 'First name',
                 border: OutlineInputBorder(),
@@ -43,17 +74,9 @@ class EditProfileScreen extends StatelessWidget {
             ),
             SizedBox(height: 10.h),
             TextField(
-              controller: fullNameController,
+              controller: lastNameController,
               decoration: const InputDecoration(
                 labelText: 'Last name',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            SizedBox(height: 10.h),
-            TextField(
-              controller: fullNameController,
-              decoration: const InputDecoration(
-                labelText: 'Age',
                 border: OutlineInputBorder(),
               ),
             ),
@@ -83,26 +106,6 @@ class EditProfileScreen extends StatelessWidget {
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             ),
             SizedBox(height: 10.h),
-            DropdownButtonFormField<String>(
-              decoration: const InputDecoration(
-                labelText: 'Sexe',
-                border: OutlineInputBorder(),
-              ),
-              items: const [
-                DropdownMenuItem(
-                  value: 'Masculin',
-                  child: Text('Masculin'),
-                ),
-                DropdownMenuItem(
-                  value: 'Féminin',
-                  child: Text('Féminin'),
-                ),
-              ],
-              onChanged: (value) {
-                // Handle the selected value
-              },
-            ),
-            SizedBox(height: 10.h),
             TextField(
               controller: dobController,
               decoration: const InputDecoration(
@@ -124,18 +127,36 @@ class EditProfileScreen extends StatelessWidget {
               },
             ),
             SizedBox(height: 20.h),
-            TextButton(
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: Constants.darkBlueColor ,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(0.r), // Assurez-vous que le rayon est 0
-                ),
-                minimumSize: const Size(100, 50)
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: isLoading
+                  ? null
+                  : () {
+                    if (firstNameController.text.isEmpty || 
+                        lastNameController.text.isEmpty ||
+                        emailController.text.isEmpty || 
+                        phoneController.text.isEmpty || 
+                        dobController.text.isEmpty ) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text("Veuillez remplir tous les champs")),
+                      );
+                      return; // Exit if any field is empty
+                    }
+
+                    updateProfil({
+                      'email': emailController.text,
+                      'first_name': firstNameController.text,
+                      'last_name': lastNameController.text,
+                      'phone': phoneController.text,
+                      'date_of_birth': dobController.text,
+                    });
+                  },
+                child: isLoading
+                    ? const CircularProgressIndicator(color: Colors.white)
+                    : const Text('Mettre a jour'),
               ),
-              child: const Text('Mettre à jour'),
-              onPressed: () {},
-            )
+            ),
           ],
         ),
       ),

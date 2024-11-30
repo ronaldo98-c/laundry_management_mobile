@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-/*import 'package:laundry_management_mobile/data/data.dart';
-import 'package:laundry_management_mobile/models/entry.dart'; */
 import 'package:laundry_management_mobile/constants/constant.dart';
+import 'package:laundry_management_mobile/controllers/api_controller.dart';
+import 'package:laundry_management_mobile/models/entry.dart';
+import 'package:laundry_management_mobile/screens/widgets/empty_list.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 
 class EntryDetailScreen extends StatefulWidget {
-  final int entryId;
+  final dynamic entryId;
   const EntryDetailScreen({super.key, required this.entryId});
 
   @override
@@ -13,14 +15,29 @@ class EntryDetailScreen extends StatefulWidget {
 }
 
 class _EntryDetailScreenState extends State<EntryDetailScreen> {
-  //Toggle Favorite button
-  bool toggleIsFavorated(bool isFavorited) {
-    return !isFavorited;
+  late ApiController apiController;
+  late Entry entry;
+
+  bool isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchEntry(widget.entryId);
   }
 
-  //Toggle add remove from cart
-  bool toggleIsSelected(bool isSelected) {
-    return !isSelected;
+  //
+  void fetchEntry(int entryId) {
+    setState(() => isLoading = true);
+    apiController.fetchData('entry/detail/$entryId').then((data) {
+      setState(() {
+        isLoading = false;
+        entry = Entry.fromJson(data);
+      });
+    }).catchError((error) {
+      setState(() => isLoading = false);
+      debugPrint("Erreur lors de la récupération des données : ${error.toString()}");
+    });
   }
 
  @override
@@ -39,30 +56,31 @@ class _EntryDetailScreenState extends State<EntryDetailScreen> {
           ),
         )
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text('Liste des vêtements', style: TextStyle(fontWeight: FontWeight.bold)),
-            const SizedBox(height: 10.0), // Réduit l'espace après le titre
-            Flexible(
-              child: ListView(
-                shrinkWrap: true, // Réduit l'espace occupé par ListView
-                children: [
-                  buildItem('Polo ~ Bleu ~ M', 'x 1'),
-                  buildItem('Pantalon ~ Noir ~ XL', 'x 2'),
-                  buildItem('Tshirt ~ Bleu ~ M', 'x 4')
-                ],
+      body:  Skeletonizer(
+        enabled: isLoading,
+        child:Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text('Liste des vêtements', style: TextStyle(fontWeight: FontWeight.bold)),
+              const SizedBox(height: 10.0), // Réduit l'espace après le titre
+              Flexible(
+                child: entry.clothes != null && entry.clothes!.isNotEmpty 
+                  ? ListView(
+                      shrinkWrap: true, // Réduit l'espace occupé par ListView
+                      children: entry.clothes!.map((item) => buildItem(item.category, 'x ${item.quantity}')).toList(),
+                    )
+                  : const EmptyList(wording: 'Aucun vêtement disponible'), // Message si la liste est vide
               ),
-            ),
-            const SizedBox(height: 16.0), // Réduit l'espace entre la liste et l'offre
-            buildOfferSection(),
-            const Divider(),
-            buildEntryBreakdown(),
-          ],
+              const SizedBox(height: 16.0), // Réduit l'espace entre la liste et l'offre
+              buildOfferSection(entry.discounPercentage),
+              const Divider(),
+              buildEntryBreakdown(entry),
+            ],
+          ),
         ),
-      ),
+      ) 
     );
   }
 
@@ -80,7 +98,7 @@ class _EntryDetailScreenState extends State<EntryDetailScreen> {
     );
   }
 
-  Widget buildOfferSection() {
+  Widget buildOfferSection(discounPercentage) {
     return Container(
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
@@ -88,36 +106,35 @@ class _EntryDetailScreenState extends State<EntryDetailScreen> {
         border: Border.all(color: Colors.pink),
         borderRadius: BorderRadius.circular(8.0),
       ),
-      child: const Row(
+      child: Row(
         children: [
-          Icon(Icons.local_offer, color: Colors.pink),
-          SizedBox(width: 8.0),
+          const Icon(Icons.local_offer, color: Colors.pink),
+          const SizedBox(width: 8.0),
           Expanded(
-            child: Text('Une remise de 10% a été appliqué sur le montant total!',
-                style: TextStyle(color: Colors.pink)),
+            child: Text('Une remise de $discounPercentage % a été appliqué sur le montant total!',
+                style: const TextStyle(color: Colors.pink)),
           ),
         ],
       ),
     );
   }
 
-  Widget buildEntryBreakdown() {
+  Widget buildEntryBreakdown(Entry entry) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text('Informations supplémentaires', style: TextStyle(fontWeight: FontWeight.bold)),
         const SizedBox(height: 8.0),
-        buildEntryRow('Reference', 'lt0215633015'),
-        buildEntryRow('Total vêtement', '10'),
-        buildEntryRow('Total kilo', '2.5 kilos'),
-        buildEntryRow('Methode de paiement', 'En cash'),
-        buildEntryRow('Status de paiement', 'Soldé'),
-        buildEntryRow('Avance', '0 Xfa'),
-        buildEntryRow('Status de paiement', 'Soldé'),
+        buildEntryRow('Reference', entry.reference.toString()),
+        buildEntryRow('Total vêtement', entry.totalClotheNumber.toString()),
+        buildEntryRow('Total kilo', '${entry.numberOfkilograms} Kilos'),
+        buildEntryRow('Methode de paiement', entry.paymentMethod.toString()),
+        buildEntryRow('Status de paiement', entry.paymentStatus.toString()),
+        buildEntryRow('Avance', '${entry.amountAdvance} XFA'),
         const Divider(),
-        buildEntryRow('Total', '1500 xfa', isBold: true),
-        buildEntryRow('Avec remise', '1000 xfa', isBold: true),
-        buildEntryRow('Reste', '0 xfa', isBold: true),
+        buildEntryRow('Total', '${entry.totalAmount} XFA', isBold: true),
+        buildEntryRow('Avance', '${entry.amountAdvance} XFA', isBold: true),
+        buildEntryRow('Montant payé', '${entry.amountPaid} XFA', isBold: true)
       ],
     );
   }

@@ -46,7 +46,7 @@ class EntryItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      entries[index].state,
+                      entries[index].state ?? "",
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.black,
@@ -75,7 +75,7 @@ class EntryItem extends StatelessWidget {
                         fontSize: 13.sp)
                   ),
                   Text(
-                    entries[index].createdAt,
+                    entries[index].createdAt ?? "",
                     style: TextStyle(color: Colors.grey, fontSize: 12.sp),
                   )
                 ],
