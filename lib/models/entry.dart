@@ -4,7 +4,7 @@ class Entry {
   int entryId;
   String? state;
   String? reference;
-  String typeOfWash;
+  String? typeOfWash;
   int? numberOfkilograms;
   double? totalAmount;
   double? amountReceived;
@@ -26,7 +26,7 @@ class Entry {
       entryId: json['id'],
       state: json['state'],
       reference: json['reference'],
-      typeOfWash: json['management_mode']['type_of_washing'],
+      typeOfWash: json['management_mode'] != null ? json['management_mode']['type_of_washing'] : '',
       numberOfkilograms: json['number_of_kilograms'],
       totalAmount: json['total_amount'],
       amountReceived: json['amount_received'],
@@ -39,7 +39,7 @@ class Entry {
       refundStatus: json['refund_status'],
       paymentMethod: json['payment_method'],
       createdAt: json['created_at'],
-      clothes: List<Clothe>.from(json['entry_clothes'].map((item) =>  
+      clothes: json['entry_clothes'] != null ? List<Clothe>.from(json['entry_clothes'].map((item) =>  
         Clothe(
           clotheId: item['clothe_id'],
           category: item['category'],
@@ -50,7 +50,7 @@ class Entry {
           ironingPercentage: item['ironing_percentage'],
           createdAt: item['created_at']
         ) 
-      ))
+      )) : []
     );
   }
 }

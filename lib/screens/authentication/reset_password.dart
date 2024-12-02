@@ -30,16 +30,15 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       setState(() => isLoading = false);
       Navigator.push(
         context,
-        MaterialPageRoute(
-          builder: (e) => const SignInScreen()
-        ),
+        MaterialPageRoute(builder: (e) => const SignInScreen()),
       );
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content:  Text("Password successfully reset")),
+        const SnackBar(content: Text("Password successfully reset")),
       );
     }).catchError((error) {
       setState(() => isLoading = false);
-      debugPrint("Erreur lors de la récupération des données : ${error.toString()}");
+      debugPrint(
+          "Erreur lors de la récupération des données : ${error.toString()}");
     });
   }
 
@@ -150,21 +149,24 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: isLoading
-                            ? null
-                            : () {
-                              if (_password.text != _confirmPassword.text) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(content: Text("Les mots de passe ne correspondent pas")),
-                                );
-                                return; // Exit if passwords do not match
-                              }
-                              resetPassword({
-                                'email': _email.text,
-                                'new_password': _password.text
-                              });
-                            },
+                              ? null
+                              : () {
+                                  if (_password.text != _confirmPassword.text) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                          content: Text(
+                                              "Les mots de passe ne correspondent pas")),
+                                    );
+                                    return; // Exit if passwords do not match
+                                  }
+                                  resetPassword({
+                                    'email': _email.text,
+                                    'new_password': _password.text
+                                  });
+                                },
                           child: isLoading
-                              ? const CircularProgressIndicator(color: Colors.white)
+                              ? const CircularProgressIndicator(
+                                  color: Colors.white)
                               : const Text('Enregistrer'),
                         ),
                       ),

@@ -12,7 +12,7 @@ class ClientSummary {
 
   factory ClientSummary.fromJson(Map<String, dynamic> json) {
     return ClientSummary(
-      netBalance: json['netBalance'].toDouble(),
+      netBalance: json['net_balance'].toDouble(),
       totalCard: json['total_card'].toDouble(),
       totalEncaisse: json['total_encaisse'].toDouble(),
       totalNonEncaisse: json['total_non_encaisse'].toDouble(),
@@ -20,8 +20,8 @@ class ClientSummary {
       Entry(
         entryId: item['id'],
         state: item['state'],
-        typeOfWash: item['raison'],
-        totalAmount: item['description'],
+        typeOfWash: json['management_mode'] != null ? json['management_mode']['type_of_washing'] : '' ,
+        totalAmount: item['total_amount'],
         createdAt: item['created_at']
       ) 
     ))

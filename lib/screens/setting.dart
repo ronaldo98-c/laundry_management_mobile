@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:laundry_management_mobile/main.dart';
 import 'package:laundry_management_mobile/blocs/app.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:laundry_management_mobile/screens/edit_profil.dart';
 import 'package:laundry_management_mobile/screens/widgets/action_dialog.dart';
 import 'package:laundry_management_mobile/screens/widgets/profile_widget.dart';
 
@@ -112,19 +111,6 @@ class _SettingScreenState extends State<SettingScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    ProfileWidget(
-                      icon: Icons.person,
-                      title: 'Mon profil',
-                      subTitle: 'Consultez votre profil',
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => EditProfileScreen(),
-                          ),
-                        );
-                      },
-                    ),
                     ProfileWidget(
                       icon: Icons.language,
                       title: 'Langues',

@@ -22,14 +22,3 @@ class LoginRequested extends AppEvent {
   @override
   List<Object> get props => [username, password];
 }
-
-class SignInRequested extends AppEvent {
-  final String name;
-  final String email;
-  final String password;
-
-  const SignInRequested({required this.name, required this.email,  required this.password});
-
-  @override
-  List<Object> get props => [name, email, password];
-}

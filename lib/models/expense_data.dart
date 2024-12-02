@@ -9,9 +9,9 @@ class ExpensesData {
 
   factory ExpensesData.fromJson(Map<String, dynamic> json) {
     return ExpensesData(
-      totalEntries: json['total_entries'],
-      totalKilos: json['total_kilos'],
-      weeklyTotals: List<double>.from(json['total_kilos'].map((item) => item.toDouble())),
+      totalEntries: json['total_entries'].toDouble(),
+      totalKilos: json['total_kilos'].toDouble(),
+      weeklyTotals: List<double>.from(json['weekly_totals'].map((item) => item.toDouble())),
       yearlyTotals: List<double>.from(json['yearly_totals'].map((item) => item.toDouble())),
     );
   }

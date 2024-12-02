@@ -29,13 +29,13 @@ class _StatisticScreenState extends State<StatisticScreen> {
   void initState() {
     super.initState();
     apiController = ApiController();
-    fetchExpenseData(2024);
+    fetchExpenseData(selectedValue);
   }
 
-  // Récupérer les données des dépenses
+  //
   void fetchExpenseData(year) {
     setState(() => isLoading = true);
-    apiController.fetchData('entries/metrics/$year').then((data) {
+    apiController.fetchData('statistic/entries/metrics/$year').then((data) {
       setState(() {
         isLoading = false;
         expensesData = ExpensesData.fromJson(data);
@@ -74,8 +74,7 @@ class _StatisticScreenState extends State<StatisticScreen> {
                   return DropdownMenuItem<String>(
                     value: value,
                     child: Text(
-                      value,
-                      style: TextStyle(color: Constants.greyColor),
+                      value
                     ),
                   );
                 }).toList(),

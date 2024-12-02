@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:laundry_management_mobile/blocs/app.dart';
 import 'package:laundry_management_mobile/theme/theme.dart';
+import 'package:laundry_management_mobile/screens/home.dart';
 import 'package:laundry_management_mobile/screens/widgets/custom_scaffold.dart';
-import 'package:laundry_management_mobile/screens/authentication/signup_screen.dart';
 import 'package:laundry_management_mobile/screens/authentication/reset_password.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -14,11 +14,9 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-
   bool _eyeClosed = false;
   final _email = TextEditingController();
   final _password = TextEditingController();
-  
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +27,12 @@ class _SignInScreenState extends State<SignInScreen> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.message)),
             );
+          } else if(state is AuthenticatedState) {
+            if (mounted) {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => HomeScreen(tabController: TabController(length: 4, vsync: ScaffoldState()))),
+              );
+            }
           }
         },
         child: BlocBuilder<AppBloc, AppState>(
@@ -44,7 +48,8 @@ class _SignInScreenState extends State<SignInScreen> {
                   Expanded(
                     flex: 7,
                     child: Container(
-                      padding: const EdgeInsets.fromLTRB(25.0, 50.0, 25.0, 20.0),
+                      padding:
+                          const EdgeInsets.fromLTRB(25.0, 50.0, 25.0, 20.0),
                       decoration: const BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.only(
@@ -77,13 +82,16 @@ class _SignInScreenState extends State<SignInScreen> {
                                 decoration: InputDecoration(
                                   label: const Text('E-mail'),
                                   hintText: 'Entrez votre e-mail',
-                                  hintStyle: const TextStyle(color: Colors.black26),
+                                  hintStyle:
+                                      const TextStyle(color: Colors.black26),
                                   border: OutlineInputBorder(
-                                    borderSide: const BorderSide(color: Colors.black12),
+                                    borderSide:
+                                        const BorderSide(color: Colors.black12),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   enabledBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(color: Colors.black12),
+                                    borderSide:
+                                        const BorderSide(color: Colors.black12),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                 ),
@@ -102,24 +110,31 @@ class _SignInScreenState extends State<SignInScreen> {
                                 decoration: InputDecoration(
                                   label: const Text('Mot de passe'),
                                   suffixIcon: IconButton(
-                                    icon: _eyeClosed ? const Icon(Icons.visibility_off) : const Icon(Icons.remove_red_eye),
-                                    onPressed: () => setState(() => _eyeClosed = !_eyeClosed),
+                                    icon: _eyeClosed
+                                        ? const Icon(Icons.visibility_off)
+                                        : const Icon(Icons.remove_red_eye),
+                                    onPressed: () => setState(
+                                        () => _eyeClosed = !_eyeClosed),
                                   ),
                                   hintText: 'Entrer le mot de passe',
-                                  hintStyle: const TextStyle(color: Colors.black26),
+                                  hintStyle:
+                                      const TextStyle(color: Colors.black26),
                                   border: OutlineInputBorder(
-                                    borderSide: const BorderSide(color: Colors.black12),
+                                    borderSide:
+                                        const BorderSide(color: Colors.black12),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   enabledBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(color: Colors.black12),
+                                    borderSide:
+                                        const BorderSide(color: Colors.black12),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                 ),
                               ),
                               const SizedBox(height: 25.0),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   const SizedBox(width: 50),
                                   GestureDetector(
@@ -127,7 +142,8 @@ class _SignInScreenState extends State<SignInScreen> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (e) => const ResetPasswordScreen(),
+                                          builder: (e) =>
+                                              const ResetPasswordScreen(),
                                         ),
                                       );
                                     },
@@ -156,36 +172,10 @@ class _SignInScreenState extends State<SignInScreen> {
                                           );
                                         },
                                   child: isLoading
-                                      ? const CircularProgressIndicator(color: Colors.white)
+                                      ? const CircularProgressIndicator(
+                                          color: Colors.white)
                                       : const Text('Se connecter'),
                                 ),
-                              ),
-                              const SizedBox(height: 25),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Text(
-                                    'Je n\'ai pas de compte? ',
-                                    style: TextStyle(color: Colors.black45),
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (e) => const SignUpScreen(),
-                                        ),
-                                      );
-                                    },
-                                    child: Text(
-                                      'S\'inscrire',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: lightColorScheme.primary,
-                                      ),
-                                    ),
-                                  ),
-                                ],
                               )
                             ],
                           ),

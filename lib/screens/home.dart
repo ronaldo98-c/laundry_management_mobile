@@ -37,6 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    apiController = ApiController();
     _loadUserData();
     fetchClientSummary();
   }
@@ -44,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
   //
   void fetchClientSummary() {
     setState(() => isLoading = true);
-    apiController.fetchData('spent').then((data) {
+    apiController.fetchData('statistic/client/summary').then((data) {
       setState(() {
         isLoading = false;
         clientSummary = ClientSummary.fromJson(data);
@@ -136,9 +137,7 @@ class _HomeScreenState extends State<HomeScreen> {
       children: [
         IconButton(
           icon: const Stack(
-            children: [
-              Icon( Icons.logout_outlined, color: Colors.black)
-            ],
+            children: [Icon(Icons.logout_outlined, color: Colors.black)],
           ),
           onPressed: () {
             BlocProvider.of<AppBloc>(context).add(LoggedOut());
@@ -261,17 +260,17 @@ class _HomeScreenState extends State<HomeScreen> {
         child: SizedBox(
             height: clientSummary.entry.isNotEmpty ? 300 : null,
             child: isLoading
-              ? const SqueletonList()
-              : clientSummary.entry.isNotEmpty
-                  ? ListView.builder(
-                      padding: const EdgeInsets.all(8.0),
-                      itemCount: clientSummary.entry.length,
-                      itemBuilder: (context, index) {
-                        return EntryItem(
-                            index: index, entries: clientSummary.entry);
-                      },
-                    )
-                  : const EmptyList(wording: "Aucune dépense")));
+                ? const SqueletonList()
+                : clientSummary.entry.isNotEmpty
+                    ? ListView.builder(
+                        padding: const EdgeInsets.all(8.0),
+                        itemCount: clientSummary.entry.length,
+                        itemBuilder: (context, index) {
+                          return EntryItem(
+                              index: index, entries: clientSummary.entry);
+                        },
+                      )
+                    : const EmptyList(wording: "Aucun dépôt")));
   }
 }
 
@@ -291,43 +290,45 @@ class BalanceCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Skeletonizer(
-        enabled: isLoading,
-        child: Card(
-          color: Constants.greyColor,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
-          // elevation: 5,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                width: 60.w, // Largeur de la boîte
-                height: 50.h, // Hauteur de la boîte
-                decoration: BoxDecoration(
-                  color: Colors.blue[50], // Couleur de fond de la boîte (couleur violette très claire)
-                  borderRadius: BorderRadius.circular(35.r), // Bordures arrondies
-                ),
-                child: Icon(icon, // Icône représentant un moniteur
-                    color: Colors.blue, // Couleur de l'icône
-                    size: 35.sp // Taille de l'icône
-                    ),
+      enabled: isLoading,
+      child: Card(
+        color: Constants.greyColor,
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+        // elevation: 5,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: 60.w, // Largeur de la boîte
+              height: 50.h, // Hauteur de la boîte
+              decoration: BoxDecoration(
+                color: Colors.blue[
+                    50], // Couleur de fond de la boîte (couleur violette très claire)
+                borderRadius: BorderRadius.circular(35.r), // Bordures arrondies
               ),
-              SizedBox(height: 10.h),
-              Text(
-                wording,
-                style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w300),
-              ),
-              SizedBox(height: 5.h),
-              Text(
-                balance.toStringAsFixed(2),
-                style: TextStyle(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black),
-              ),
-            ],
-          ),
+              child: Icon(icon, // Icône représentant un moniteur
+                  color: Colors.blue, // Couleur de l'icône
+                  size: 35.sp // Taille de l'icône
+                  ),
+            ),
+            SizedBox(height: 10.h),
+            Text(
+              wording,
+              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w300),
+            ),
+            SizedBox(height: 5.h),
+            Text(
+              balance.toStringAsFixed(2),
+              style: TextStyle(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black),
+            ),
+          ],
         ),
-      );
+      ),
+    );
   }
 }
 

@@ -31,7 +31,7 @@ class _EntryScreenState extends State<EntryScreen> {
     super.initState();
     apiController = ApiController();
     dataManager = DataManager<Entry>(apiController,
-        'spent/list/pageNumber/NULL/specificDate/NULL/startDate/NULL/endDate/NULL');
+        'entry/list/pageNumber/NULL/specificDate/NULL/startDate/NULL/endDate/NULL/status/NULL');
     dataFetcher = DataFetcher<Entry>();
 
     fetchEntries();
@@ -39,9 +39,9 @@ class _EntryScreenState extends State<EntryScreen> {
 
   // Récupérer les groupes
   void fetchEntries() {
+    setState(() => isLoadingEntries = true);
     dataFetcher.fetchAndSetData(
-        fetchData: () => dataManager
-            .fetchData((json) => Entry.fromJson(json)), // Exemple de parsing
+        fetchData: () => dataManager.fetchData((json) => Entry.fromJson(json)), // Exemple de parsing
         onSetData: (data) => setState(() => entryList = data),
         onComplete: () => setState(() => isLoadingEntries = false),
         context: context);
